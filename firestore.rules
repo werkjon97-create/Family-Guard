@@ -1,0 +1,328 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Global Hardened Helpers ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_.\\-]+$');
+    }
+
+    function isValidTimestamp(ts) {
+      return ts is timestamp && ts <= request.time;
+    }
+
+    // --- Validation Blueprints ---
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 80 &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 160)) &&
+             data.privacyMode is bool &&
+             data.role in ['parent', 'child'] &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidPairingCode(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             (!('childLabel' in data) || (data.childLabel is string && data.childLabel.size() <= 60)) &&
+             data.used is bool &&
+             (!('usedByDeviceId' in data) || (data.usedByDeviceId is string && data.usedByDeviceId.size() <= 128)) &&
+             data.expiresAtMs is int && data.expiresAtMs > 0 &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidChildDevice(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             data.childUid is string && data.childUid.size() >= 1 && data.childUid.size() <= 128 &&
+             data.childName is string && data.childName.size() >= 1 && data.childName.size() <= 60 &&
+             data.deviceName is string && data.deviceName.size() >= 1 && data.deviceName.size() <= 80 &&
+             data.androidVersion is string && data.androidVersion.size() >= 1 && data.androidVersion.size() <= 32 &&
+             data.isOnline is bool &&
+             data.monitoringActive is bool &&
+             data.usageAccessGranted is bool &&
+             data.screenTimeMs is int && data.screenTimeMs >= 0 &&
+             data.appCount is int && data.appCount >= 0 &&
+             data.lastSeenMs is int && data.lastSeenMs >= 0 &&
+             data.syncStatus in ['synced', 'pending', 'failed'] &&
+             (!('fcmToken' in data) || (data.fcmToken is string && data.fcmToken.size() <= 512)) &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidDailyUsage(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             data.childUid is string && data.childUid.size() >= 1 && data.childUid.size() <= 128 &&
+             data.date is string && data.date.size() == 10 && data.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') &&
+             data.totalScreenTimeMs is int && data.totalScreenTimeMs >= 0 &&
+             data.appCount is int && data.appCount >= 0 &&
+             (!('topAppName' in data) || (data.topAppName is string && data.topAppName.size() <= 80)) &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidAppUsageEntry(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             data.childUid is string && data.childUid.size() >= 1 && data.childUid.size() <= 128 &&
+             data.packageName is string && data.packageName.size() >= 1 && data.packageName.size() <= 128 &&
+             data.appName is string && data.appName.size() >= 1 && data.appName.size() <= 80 &&
+             data.usageTimeMs is int && data.usageTimeMs >= 0 &&
+             data.launchCount is int && data.launchCount >= 0 &&
+             data.lastUsedMs is int && data.lastUsedMs >= 0 &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidDeviceAlert(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             data.childUid is string && data.childUid.size() >= 1 && data.childUid.size() <= 128 &&
+             data.deviceId is string && data.deviceId.size() >= 1 && data.deviceId.size() <= 128 &&
+             data.type in ['limit_exceeded', 'usage_access_revoked', 'sync_failed', 'offline_too_long', 'settings_changed'] &&
+             data.title is string && data.title.size() >= 1 && data.title.size() <= 120 &&
+             data.message is string && data.message.size() >= 1 && data.message.size() <= 300 &&
+             data.isRead is bool &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    function isValidAppLimit(data) {
+      return data.parentUid is string && data.parentUid.size() >= 1 && data.parentUid.size() <= 128 &&
+             data.childUid is string && data.childUid.size() >= 1 && data.childUid.size() <= 128 &&
+             data.packageName is string && data.packageName.size() >= 1 && data.packageName.size() <= 128 &&
+             data.appName is string && data.appName.size() >= 1 && data.appName.size() <= 80 &&
+             data.dailyLimitMinutes is int && data.dailyLimitMinutes >= 1 && data.dailyLimitMinutes <= 1440 &&
+             data.isEnabled is bool &&
+             isValidTimestamp(data.createdAt) &&
+             isValidTimestamp(data.updatedAt);
+    }
+
+    // --- Collection Rules ---
+
+    // 1. User Profile (PII isolated strictly to owner)
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+      allow list: if isSignedIn() && request.auth.uid == userId;
+
+      allow create: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'privacyMode', 'role', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'email', 'privacyMode', 'role', 'createdAt', 'updatedAt']) &&
+                       isValidUserProfile(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(userId) &&
+                       request.auth.uid == userId &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'email', 'privacyMode', 'role', 'updatedAt']);
+
+      allow delete: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+    }
+
+    // 2. Pairing Codes (No listing allowed; exact SHA-256 hash lookup only; single-use terminal lock)
+    match /pairing_codes/{codeHash} {
+      allow get: if isSignedIn() && isValidId(codeHash) &&
+                    (resource == null || existing().parentUid == request.auth.uid || existing().used == false);
+      allow list: if false;
+
+      allow create: if isSignedIn() &&
+                       isValidId(codeHash) &&
+                       incoming().parentUid == request.auth.uid &&
+                       incoming().used == false &&
+                       incoming().keys().hasAll(['parentUid', 'used', 'expiresAtMs', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['parentUid', 'childLabel', 'used', 'usedByDeviceId', 'expiresAtMs', 'createdAt', 'updatedAt']) &&
+                       isValidPairingCode(incoming());
+
+      // Single-use consumption: once used == true, terminal lock prevents reuse
+      allow update: if isSignedIn() &&
+                       isValidId(codeHash) &&
+                       isValidPairingCode(incoming()) &&
+                       existing().used == false &&
+                       incoming().used == true &&
+                       incoming().parentUid == existing().parentUid &&
+                       incoming().expiresAtMs == existing().expiresAtMs &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['used', 'usedByDeviceId', 'updatedAt']);
+
+      allow delete: if isSignedIn() && isValidId(codeHash) && existing().parentUid == request.auth.uid;
+    }
+
+    // 3. Devices & Subcollections
+    match /devices/{deviceId} {
+      allow get: if isSignedIn() && isValidId(deviceId) &&
+                    (resource == null || existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+      allow list: if isSignedIn() &&
+                    (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+
+      allow create: if isSignedIn() &&
+                       isValidId(deviceId) &&
+                       (incoming().parentUid == request.auth.uid || incoming().childUid == request.auth.uid) &&
+                       incoming().keys().hasAll(['parentUid', 'childUid', 'childName', 'deviceName', 'androidVersion', 'isOnline', 'monitoringActive', 'usageAccessGranted', 'screenTimeMs', 'appCount', 'lastSeenMs', 'syncStatus', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['parentUid', 'childUid', 'childName', 'deviceName', 'androidVersion', 'isOnline', 'monitoringActive', 'usageAccessGranted', 'screenTimeMs', 'appCount', 'lastSeenMs', 'syncStatus', 'fcmToken', 'createdAt', 'updatedAt']) &&
+                       isValidChildDevice(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(deviceId) &&
+                       isValidChildDevice(incoming()) &&
+                       incoming().parentUid == existing().parentUid &&
+                       incoming().childUid == existing().childUid &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         // Parent action: update childName, monitoringActive, or sync metadata
+                         (existing().parentUid == request.auth.uid &&
+                          incoming().diff(existing()).affectedKeys().hasOnly(['childName', 'monitoringActive', 'isOnline', 'syncStatus', 'updatedAt'])) ||
+                         // Child device action: telemetry sync (cannot alter parentUid/childUid/monitoringActive)
+                         (existing().childUid == request.auth.uid &&
+                          incoming().diff(existing()).affectedKeys().hasOnly(['deviceName', 'androidVersion', 'isOnline', 'usageAccessGranted', 'screenTimeMs', 'appCount', 'lastSeenMs', 'syncStatus', 'fcmToken', 'updatedAt']))
+                       );
+
+      allow delete: if isSignedIn() && isValidId(deviceId) && existing().parentUid == request.auth.uid;
+
+      // 3a. Daily Usage Summary
+      match /usage/{date} {
+        allow get: if isSignedIn() && isValidId(deviceId) && isValidId(date) &&
+                      ((resource != null && (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid)) ||
+                       (resource == null && exists(/databases/$(database)/documents/devices/$(deviceId)) && (get(/databases/$(database)/documents/devices/$(deviceId)).data.parentUid == request.auth.uid || get(/databases/$(database)/documents/devices/$(deviceId)).data.childUid == request.auth.uid)));
+        allow list: if isSignedIn() &&
+                      (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+
+        allow create: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(date) &&
+                         (incoming().parentUid == request.auth.uid || incoming().childUid == request.auth.uid) &&
+                         incoming().date == date &&
+                         incoming().keys().hasAll(['parentUid', 'childUid', 'date', 'totalScreenTimeMs', 'appCount', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['parentUid', 'childUid', 'date', 'totalScreenTimeMs', 'appCount', 'topAppName', 'createdAt', 'updatedAt']) &&
+                         isValidDailyUsage(incoming()) &&
+                         exists(/databases/$(database)/documents/devices/$(deviceId));
+
+        allow update: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(date) &&
+                         isValidDailyUsage(incoming()) &&
+                         (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid) &&
+                         incoming().parentUid == existing().parentUid &&
+                         incoming().childUid == existing().childUid &&
+                         incoming().date == existing().date &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['totalScreenTimeMs', 'appCount', 'topAppName', 'updatedAt']);
+
+        allow delete: if isSignedIn() && isValidId(deviceId) && isValidId(date) &&
+                         existing().parentUid == request.auth.uid;
+      }
+
+      // 3b. Per-App Usage
+      match /apps/{packageName} {
+        allow get: if isSignedIn() && isValidId(deviceId) && isValidId(packageName) &&
+                      ((resource != null && (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid)) ||
+                       (resource == null && exists(/databases/$(database)/documents/devices/$(deviceId)) && (get(/databases/$(database)/documents/devices/$(deviceId)).data.parentUid == request.auth.uid || get(/databases/$(database)/documents/devices/$(deviceId)).data.childUid == request.auth.uid)));
+        allow list: if isSignedIn() &&
+                      (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+
+        allow create: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(packageName) &&
+                         (incoming().parentUid == request.auth.uid || incoming().childUid == request.auth.uid) &&
+                         incoming().packageName == packageName &&
+                         incoming().keys().hasAll(['parentUid', 'childUid', 'packageName', 'appName', 'usageTimeMs', 'launchCount', 'lastUsedMs', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['parentUid', 'childUid', 'packageName', 'appName', 'usageTimeMs', 'launchCount', 'lastUsedMs', 'createdAt', 'updatedAt']) &&
+                         isValidAppUsageEntry(incoming()) &&
+                         exists(/databases/$(database)/documents/devices/$(deviceId));
+
+        allow update: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(packageName) &&
+                         isValidAppUsageEntry(incoming()) &&
+                         (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid) &&
+                         incoming().parentUid == existing().parentUid &&
+                         incoming().childUid == existing().childUid &&
+                         incoming().packageName == existing().packageName &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['appName', 'usageTimeMs', 'launchCount', 'lastUsedMs', 'updatedAt']);
+
+        allow delete: if isSignedIn() && isValidId(deviceId) && isValidId(packageName) &&
+                         existing().parentUid == request.auth.uid;
+      }
+
+      // 3c. Alerts
+      match /alerts/{alertId} {
+        allow get: if isSignedIn() && isValidId(deviceId) && isValidId(alertId) &&
+                      ((resource != null && (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid)) ||
+                       (resource == null && exists(/databases/$(database)/documents/devices/$(deviceId)) && (get(/databases/$(database)/documents/devices/$(deviceId)).data.parentUid == request.auth.uid || get(/databases/$(database)/documents/devices/$(deviceId)).data.childUid == request.auth.uid)));
+        allow list: if isSignedIn() &&
+                      (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+
+        allow create: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(alertId) &&
+                         (incoming().parentUid == request.auth.uid || incoming().childUid == request.auth.uid) &&
+                         incoming().deviceId == deviceId &&
+                         incoming().keys().hasAll(['parentUid', 'childUid', 'deviceId', 'type', 'title', 'message', 'isRead', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['parentUid', 'childUid', 'deviceId', 'type', 'title', 'message', 'isRead', 'createdAt', 'updatedAt']) &&
+                         isValidDeviceAlert(incoming()) &&
+                         exists(/databases/$(database)/documents/devices/$(deviceId));
+
+        allow update: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(alertId) &&
+                         isValidDeviceAlert(incoming()) &&
+                         existing().parentUid == request.auth.uid &&
+                         incoming().parentUid == existing().parentUid &&
+                         incoming().childUid == existing().childUid &&
+                         incoming().deviceId == existing().deviceId &&
+                         incoming().type == existing().type &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['isRead', 'updatedAt']);
+
+        allow delete: if isSignedIn() && isValidId(deviceId) && isValidId(alertId) &&
+                         existing().parentUid == request.auth.uid;
+      }
+
+      // 3d. App Limits (Only Parent can create/update/delete; Child can read)
+      match /limits/{packageName} {
+        allow get: if isSignedIn() && isValidId(deviceId) && isValidId(packageName) &&
+                      ((resource != null && (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid)) ||
+                       (resource == null && exists(/databases/$(database)/documents/devices/$(deviceId)) && (get(/databases/$(database)/documents/devices/$(deviceId)).data.parentUid == request.auth.uid || get(/databases/$(database)/documents/devices/$(deviceId)).data.childUid == request.auth.uid)));
+        allow list: if isSignedIn() &&
+                      (existing().parentUid == request.auth.uid || existing().childUid == request.auth.uid);
+
+        allow create: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(packageName) &&
+                         incoming().parentUid == request.auth.uid &&
+                         incoming().packageName == packageName &&
+                         incoming().keys().hasAll(['parentUid', 'childUid', 'packageName', 'appName', 'dailyLimitMinutes', 'isEnabled', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['parentUid', 'childUid', 'packageName', 'appName', 'dailyLimitMinutes', 'isEnabled', 'createdAt', 'updatedAt']) &&
+                         isValidAppLimit(incoming()) &&
+                         exists(/databases/$(database)/documents/devices/$(deviceId)) &&
+                         get(/databases/$(database)/documents/devices/$(deviceId)).data.parentUid == request.auth.uid;
+
+        allow update: if isSignedIn() &&
+                         isValidId(deviceId) && isValidId(packageName) &&
+                         isValidAppLimit(incoming()) &&
+                         existing().parentUid == request.auth.uid &&
+                         incoming().parentUid == existing().parentUid &&
+                         incoming().childUid == existing().childUid &&
+                         incoming().packageName == existing().packageName &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['appName', 'dailyLimitMinutes', 'isEnabled', 'updatedAt']);
+
+        allow delete: if isSignedIn() && isValidId(deviceId) && isValidId(packageName) &&
+                         existing().parentUid == request.auth.uid;
+      }
+    }
+  }
+}

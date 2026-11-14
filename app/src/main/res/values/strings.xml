@@ -1,0 +1,141 @@
+<resources>
+    <string name="app_name">Family Guard</string>
+
+    <!-- Auth & Onboarding -->
+    <string name="auth_title">Family Guard</string>
+    <string name="auth_subtitle">Transparent, legal parental controls powered by official Android APIs.</string>
+    <string name="auth_sign_in_google">Sign in with Google</string>
+    <string name="auth_signing_in">Signing in…</string>
+    <string name="auth_privacy_note">No hidden services, no screen recording, no keylogging. Only app usage duration and safety limits.</string>
+    <string name="role_picker_title">Choose Device Role</string>
+    <string name="role_picker_subtitle">Select how this device will participate in your Family Guard circle.</string>
+    <string name="role_parent_title">Parent Device</string>
+    <string name="role_parent_desc">View screen time, generate pairing codes, configure daily app warnings, and manage privacy.</string>
+    <string name="role_child_title">Child Device</string>
+    <string name="role_child_desc">Link to a parent account transparently with official Android Usage Access.</string>
+
+    <!-- Parent Navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_devices">Devices</string>
+    <string name="nav_limits">Limits</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Parent Dashboard -->
+    <string name="welcome_greeting">Welcome back, %1$s</string>
+    <string name="screen_time_title">Screen Time</string>
+    <string name="most_used_title">Most Used Apps</string>
+    <string name="alerts_label">Alerts</string>
+    <string name="apps_used_label">Apps Used</string>
+    <string name="last_sync_label">Last Sync</string>
+    <string name="todays_usage_title">Today\'s Usage</string>
+    <string name="device_status_online">Online</string>
+    <string name="device_status_offline">Offline</string>
+    <string name="monitoring_active">Monitoring Active</string>
+    <string name="monitoring_paused">Monitoring Paused</string>
+    <string name="privacy_mode_active_banner">Privacy Mode is ON — sensitive child &amp; app names are masked.</string>
+    <string name="hidden_child_label">Protected Child</string>
+    <string name="hidden_device_label">Protected Device</string>
+    <string name="hidden_app_label">Protected App #%1$d</string>
+    <string name="no_devices_title">No Child Devices Linked Yet</string>
+    <string name="no_devices_desc">Generate a one-time pairing code from the Devices tab to link your child\'s phone securely.</string>
+    <string name="no_usage_yet">Waiting for the first usage sync from this device.</string>
+    <string name="select_device_label">Active Child Device</string>
+
+    <!-- Devices & Pairing -->
+    <string name="my_children_title">My Children &amp; Devices</string>
+    <string name="add_child_device">+ Add Child Device</string>
+    <string name="generate_pairing_code">Generate Pairing Code</string>
+    <string name="pairing_child_name_hint">Child\'s name (optional)</string>
+    <string name="pairing_code_label">One-Time Pairing Code</string>
+    <string name="pairing_code_expiry">Expires in 10 minutes • Single use • SHA-256 protected</string>
+    <string name="pairing_copy_code">Copy Code</string>
+    <string name="pairing_copied_toast">Pairing code copied</string>
+    <string name="last_seen_prefix">Last seen: %1$s</string>
+    <string name="android_version_prefix">OS: %1$s</string>
+    <string name="monitoring_switch_label">Parental Monitoring</string>
+
+    <!-- App Limits -->
+    <string name="app_limits_title">Daily App Limits</string>
+    <string name="app_limits_subtitle">Official tracking + friendly warnings + parent alerts (never force-closes apps).</string>
+    <string name="add_limit_button">Add App Limit</string>
+    <string name="limit_minutes_format">%1$d min/day</string>
+    <string name="limit_app_name_label">App Name</string>
+    <string name="limit_package_label">Package Name (e.g. com.google.android.youtube)</string>
+    <string name="limit_minutes_label">Daily Limit (minutes)</string>
+    <string name="save_action">Save</string>
+    <string name="cancel_action">Cancel</string>
+    <string name="delete_action">Delete</string>
+    <string name="no_limits_title">No App Limits Configured</string>
+    <string name="no_limits_desc">Add a daily minute threshold for apps like YouTube, Chrome, or Instagram.</string>
+    <string name="launches_count_format">%1$d opens</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">Safety Alerts</string>
+    <string name="mark_read_action">Mark Read</string>
+    <string name="no_alerts_title">All Clear</string>
+    <string name="no_alerts_desc">No limit warnings, sync errors, or permission changes reported.</string>
+
+    <!-- Account Settings & Privacy -->
+    <string name="settings_title">Account &amp; Privacy</string>
+    <string name="privacy_mode_title">Privacy Mode (Dashboard Masking)</string>
+    <string name="privacy_mode_desc">Hides child names, device IDs, and app titles inside the Parent Dashboard while keeping Family Guard visible and transparent.</string>
+    <string name="language_title">Language</string>
+    <string name="language_system">System Default</string>
+    <string name="language_english">English</string>
+    <string name="language_arabic">العربية</string>
+    <string name="switch_role_action">Switch to Child Setup Mode</string>
+    <string name="switch_to_parent_action">Switch to Parent Mode</string>
+    <string name="logout_action">Sign Out</string>
+    <string name="privacy_data_title">Privacy &amp; Data Transparency</string>
+    <string name="privacy_what_title">What data is collected</string>
+    <string name="privacy_what_body">Only foreground app duration, launch counts (when available), device model/OS version, and parent-configured limit status.</string>
+    <string name="privacy_why_title">Why it is collected</string>
+    <string name="privacy_why_body">To give parents clear daily screen-time insights and gentle limit alerts without reading messages, passwords, or screen content.</string>
+    <string name="privacy_where_title">Where it is stored &amp; retention</string>
+    <string name="privacy_where_body">Cached locally in encrypted app storage (Room) and synced over HTTPS to your isolated Cloud Firestore space until you delete it.</string>
+    <string name="delete_device_data_action">Delete Child Device Data</string>
+    <string name="delete_account_action">Delete Account &amp; All Data</string>
+    <string name="confirm_delete_device_title">Delete Child Device Data?</string>
+    <string name="confirm_delete_device_body">This permanently removes all usage logs, limits, and alerts for %1$s from Firestore.</string>
+    <string name="confirm_delete_account_title">Delete Account &amp; All Data?</string>
+    <string name="confirm_delete_account_body">This permanently deletes all linked child devices, usage history, alerts, and your profile, then signs you out.</string>
+    <string name="confirm_action">Confirm Delete</string>
+
+    <!-- Child App Flow -->
+    <string name="child_welcome_title">Welcome to Family Guard</string>
+    <string name="child_welcome_body">This device will be transparently linked to a parent account to track daily screen time using official Android permissions.</string>
+    <string name="child_start_setup">Start Setup</string>
+    <string name="child_enter_code_title">Enter Parent Code</string>
+    <string name="child_code_hint">e.g. 7K4P-92MX</string>
+    <string name="child_name_hint">Your name (optional)</string>
+    <string name="child_connect_button">Connect</string>
+    <string name="child_connected_badge">Device Connected ✓</string>
+    <string name="child_transparency_title">Family Guard is active</string>
+    <string name="child_transparency_body">This device is protected by parental controls.\n\nUsage statistics are collected according to Android permissions and sent securely to the parent account.</string>
+    <string name="usage_access_required_title">Usage Access Required</string>
+    <string name="usage_access_required_body">Family Guard needs Usage Access so it can calculate daily app screen time through official Android APIs.</string>
+    <string name="open_android_settings">Open Android Settings</string>
+    <string name="usage_access_granted_badge">Usage Access Granted ✓</string>
+    <string name="sync_now_button">Sync Usage Now</string>
+    <string name="syncing_label">Syncing…</string>
+    <string name="child_limits_section">Active Daily Limits</string>
+    <string name="child_local_usage_section">Today\'s Screen Time on This Device</string>
+    <string name="child_unlink_local">Reset Local Pairing</string>
+    <string name="enable_notifications_banner">Allow notifications so daily limit warnings can appear clearly.</string>
+    <string name="enable_notifications_button">Enable Notifications</string>
+
+    <!-- Errors & Notifications -->
+    <string name="error_no_internet">No internet connection. Local Room cache remains active.</string>
+    <string name="error_invalid_code">Invalid or already used pairing code.</string>
+    <string name="error_expired_code">This pairing code has expired. Ask your parent for a new one.</string>
+    <string name="error_permission_denied">Access denied by security rules. Please verify your signed-in account.</string>
+    <string name="notification_channel_alerts">Limit &amp; Safety Alerts</string>
+    <string name="notification_channel_updates">Settings Sync Updates</string>
+    <string name="limit_warning_title">Daily App Limit Reached</string>
+    <string name="limit_warning_body">You have reached your daily time limit for: %1$s</string>
+    <string name="fcm_limits_updated">New parental-control limits available</string>
+    <string name="fcm_settings_updated">New parental-control settings available</string>
+    <string name="fcm_sync_attention">Usage sync needs attention</string>
+    <string name="retry_action">Retry</string>
+</resources>

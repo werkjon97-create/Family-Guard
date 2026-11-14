@@ -1,0 +1,141 @@
+<resources>
+    <string name="app_name">Family Guard</string>
+
+    <!-- Auth & Onboarding -->
+    <string name="auth_title">Family Guard</string>
+    <string name="auth_subtitle">نظام رقابة أبوية قانوني وشفاف يعتمد على واجهات Android الرسمية فقط.</string>
+    <string name="auth_sign_in_google">تسجيل الدخول عبر Google</string>
+    <string name="auth_signing_in">جاري تسجيل الدخول…</string>
+    <string name="auth_privacy_note">بدون خدمات مخفية أو تسجيل شاشة أو مراقبة لوحة المفاتيح. فقط مدة استخدام التطبيقات والحدود اليومية.</string>
+    <string name="role_picker_title">اختر وضع الجهاز</string>
+    <string name="role_picker_subtitle">حدد دور هذا الجهاز داخل عائلتك في Family Guard.</string>
+    <string name="role_parent_title">تطبيق الوالد (Parent)</string>
+    <string name="role_parent_desc">متابعة وقت الشاشة، إنشاء رموز الربط، تحديد حدود التطبيقات، وإدارة الخصوصية.</string>
+    <string name="role_child_title">جهاز الطفل (Child)</string>
+    <string name="role_child_desc">الربط الشفاف بحساب الوالد باستخدام صلاحية Usage Access الرسمية.</string>
+
+    <!-- Parent Navigation -->
+    <string name="nav_dashboard">الرئيسية</string>
+    <string name="nav_devices">الأجهزة</string>
+    <string name="nav_limits">الحدود</string>
+    <string name="nav_alerts">التنبيهات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Parent Dashboard -->
+    <string name="welcome_greeting">مرحباً، %1$s</string>
+    <string name="screen_time_title">وقت الشاشة</string>
+    <string name="most_used_title">أكثر التطبيقات استخداماً</string>
+    <string name="alerts_label">التنبيهات</string>
+    <string name="apps_used_label">التطبيقات المستخدمة</string>
+    <string name="last_sync_label">آخر مزامنة</string>
+    <string name="todays_usage_title">استخدام اليوم</string>
+    <string name="device_status_online">متصل</string>
+    <string name="device_status_offline">غير متصل</string>
+    <string name="monitoring_active">الرقابة نشطة</string>
+    <string name="monitoring_paused">الرقابة متوقفة</string>
+    <string name="privacy_mode_active_banner">وضع الخصوصية مُفعّل — تم إخفاء أسماء الأطفال والتطبيقات الحساسة داخل لوحة الوالد.</string>
+    <string name="hidden_child_label">طفل محمي</string>
+    <string name="hidden_device_label">جهاز محمي</string>
+    <string name="hidden_app_label">تطبيق محمي #%1$d</string>
+    <string name="no_devices_title">لا توجد أجهزة أطفال مرتبطة بعد</string>
+    <string name="no_devices_desc">أنشئ رمز ربط صالح لمرة واحدة من تبويب الأجهزة لربط هاتف طفلك بشكل آمن.</string>
+    <string name="no_usage_yet">بانتظار أول مزامنة لإحصائيات الاستخدام من هذا الجهاز.</string>
+    <string name="select_device_label">جهاز الطفل المحدد</string>
+
+    <!-- Devices & Pairing -->
+    <string name="my_children_title">أطفالي والأجهزة</string>
+    <string name="add_child_device">+ إضافة جهاز طفل</string>
+    <string name="generate_pairing_code">إنشاء رمز ربط</string>
+    <string name="pairing_child_name_hint">اسم الطفل (اختياري)</string>
+    <string name="pairing_code_label">رمز الربط لمرة واحدة</string>
+    <string name="pairing_code_expiry">صالح لمدة 10 دقائق • استخدام مرة واحدة • محمي بـ SHA-256</string>
+    <string name="pairing_copy_code">نسخ الرمز</string>
+    <string name="pairing_copied_toast">تم نسخ رمز الربط</string>
+    <string name="last_seen_prefix">آخر ظهور: %1$s</string>
+    <string name="android_version_prefix">النظام: %1$s</string>
+    <string name="monitoring_switch_label">حالة الرقابة</string>
+
+    <!-- App Limits -->
+    <string name="app_limits_title">الحدود اليومية للتطبيقات</string>
+    <string name="app_limits_subtitle">تتبع رسمي + تنبيه لطيف + إشعار للوالد (بدون إغلاق قسري للتطبيقات).</string>
+    <string name="add_limit_button">إضافة حد لتطبيق</string>
+    <string name="limit_minutes_format">%1$d دقيقة/يوم</string>
+    <string name="limit_app_name_label">اسم التطبيق</string>
+    <string name="limit_package_label">معرّف الحزمة (مثال: com.google.android.youtube)</string>
+    <string name="limit_minutes_label">الحد اليومي (بالدقائق)</string>
+    <string name="save_action">حفظ</string>
+    <string name="cancel_action">إلغاء</string>
+    <string name="delete_action">حذف</string>
+    <string name="no_limits_title">لم يتم تعيين حدود بعد</string>
+    <string name="no_limits_desc">أضف حداً يومياً بالدقائق لتطبيقات مثل YouTube أو Chrome أو Instagram.</string>
+    <string name="launches_count_format">%1$d مرة فتح</string>
+
+    <!-- Alerts -->
+    <string name="alerts_title">تنبيهات الأمان</string>
+    <string name="mark_read_action">تحديد كمقروء</string>
+    <string name="no_alerts_title">لا توجد تنبيهات جديدة</string>
+    <string name="no_alerts_desc">لم يتم تسجيل تجاوز للحدود أو أخطاء مزامنة أو تغيير في الصلاحيات.</string>
+
+    <!-- Account Settings & Privacy -->
+    <string name="settings_title">الحساب والخصوصية</string>
+    <string name="privacy_mode_title">وضع الخصوصية (إخفاء تفاصيل اللوحة)</string>
+    <string name="privacy_mode_desc">يخفي أسماء الأطفال والأجهزة والتطبيقات داخل لوحة الوالد فقط، بينما يبقى التطبيق ظاهراً وشفافاً.</string>
+    <string name="language_title">اللغة</string>
+    <string name="language_system">لغة النظام</string>
+    <string name="language_english">English</string>
+    <string name="language_arabic">العربية</string>
+    <string name="switch_role_action">الانتقال إلى وضع إعداد الطفل</string>
+    <string name="switch_to_parent_action">الانتقال إلى وضع الوالد</string>
+    <string name="logout_action">تسجيل الخروج</string>
+    <string name="privacy_data_title">الخصوصية وشفافية البيانات</string>
+    <string name="privacy_what_title">ما البيانات التي يتم جمعها</string>
+    <string name="privacy_what_body">فقط مدة استخدام التطبيقات في الواجهة وعدد مرات الفتح (إن توفرت) وطراز الجهاز وإصدار Android وحالة الحدود.</string>
+    <string name="privacy_why_title">لماذا يتم جمعها</string>
+    <string name="privacy_why_body">لمساعدة الوالدين على متابعة وقت الشاشة وتلقي تنبيهات الحدود بدون قراءة الرسائل أو كلمات المرور أو محتوى الشاشة.</string>
+    <string name="privacy_where_title">أين تُخزَّن ومدة الاحتفاظ</string>
+    <string name="privacy_where_body">تُحفظ محلياً في قاعدة Room وتُزامن عبر HTTPS إلى مساحة Cloud Firestore المعزولة لحسابك حتى تقوم بحذفها.</string>
+    <string name="delete_device_data_action">حذف بيانات جهاز الطفل</string>
+    <string name="delete_account_action">حذف الحساب وجميع البيانات</string>
+    <string name="confirm_delete_device_title">حذف بيانات جهاز الطفل؟</string>
+    <string name="confirm_delete_device_body">سيتم حذف جميع سجلات الاستخدام والحدود والتنبيهات الخاصة بـ %1$s نهائياً من Firestore.</string>
+    <string name="confirm_delete_account_title">حذف الحساب وجميع البيانات؟</string>
+    <string name="confirm_delete_account_body">سيتم حذف جميع أجهزة الأطفال المرتبطة وسجل الاستخدام والتنبيهات وملفك الشخصي نهائياً ثم تسجيل الخروج.</string>
+    <string name="confirm_action">تأكيد الحذف</string>
+
+    <!-- Child App Flow -->
+    <string name="child_welcome_title">مرحباً بك في Family Guard</string>
+    <string name="child_welcome_body">هذا الجهاز سيتم ربطه بحساب الوالد بشكل شفاف لحساب وقت الاستخدام اليومي عبر صلاحيات Android الرسمية.</string>
+    <string name="child_start_setup">بدء الإعداد</string>
+    <string name="child_enter_code_title">أدخل رمز الوالد</string>
+    <string name="child_code_hint">مثال: 7K4P-92MX</string>
+    <string name="child_name_hint">اسمك (اختياري)</string>
+    <string name="child_connect_button">ربط الجهاز</string>
+    <string name="child_connected_badge">تم ربط الجهاز ✓</string>
+    <string name="child_transparency_title">Family Guard نشط</string>
+    <string name="child_transparency_body">هذا الجهاز محمي بواسطة الرقابة الأبوية.\n\nيتم جمع إحصائيات الاستخدام وفق صلاحيات Android وإرسالها بشكل آمن إلى حساب الوالد.</string>
+    <string name="usage_access_required_title">مطلوب صلاحية Usage Access</string>
+    <string name="usage_access_required_body">Family Guard يحتاج إلى Usage Access حتى يتمكن من حساب وقت استخدام التطبيقات عبر واجهات Android الرسمية.</string>
+    <string name="open_android_settings">فتح إعدادات Android</string>
+    <string name="usage_access_granted_badge">صلاحية Usage Access مفعّلة ✓</string>
+    <string name="sync_now_button">مزامنة الاستخدام الآن</string>
+    <string name="syncing_label">جاري المزامنة…</string>
+    <string name="child_limits_section">الحدود اليومية المفعّلة</string>
+    <string name="child_local_usage_section">وقت الاستخدام اليوم على هذا الجهاز</string>
+    <string name="child_unlink_local">إعادة ضبط الربط المحلي</string>
+    <string name="enable_notifications_banner">اسمح بالإشعارات ليظهر تنبيه لطيف عند الوصول للحد اليومي.</string>
+    <string name="enable_notifications_button">تفعيل الإشعارات</string>
+
+    <!-- Errors & Notifications -->
+    <string name="error_no_internet">لا يوجد اتصال بالإنترنت. تم حفظ البيانات محلياً في Room.</string>
+    <string name="error_invalid_code">رمز الربط غير صحيح أو تم استخدامه مسبقاً.</string>
+    <string name="error_expired_code">انتهت صلاحية رمز الربط. اطلب رمزاً جديداً من الوالد.</string>
+    <string name="error_permission_denied">تم رفض الوصول من قواعد الأمان. تأكد من الحساب المسجل.</string>
+    <string name="notification_channel_alerts">تنبيهات الحدود والأمان</string>
+    <string name="notification_channel_updates">تحديثات الإعدادات</string>
+    <string name="limit_warning_title">تم الوصول للحد اليومي</string>
+    <string name="limit_warning_body">لقد تجاوزت الوقت اليومي المحدد لتطبيق: %1$s</string>
+    <string name="fcm_limits_updated">تتوفر حدود رقابة أبوية جديدة</string>
+    <string name="fcm_settings_updated">تتوفر إعدادات رقابة أبوية جديدة</string>
+    <string name="fcm_sync_attention">تتطلب مزامنة الاستخدام مراجعة</string>
+    <string name="retry_action">إعادة المحاولة</string>
+</resources>
